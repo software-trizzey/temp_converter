@@ -21,3 +21,8 @@ Run prod. binary version:
 ```bash
 ./target/debug/temp_converter
 ```
+
+## Ideas
+
+1. Support multiple temperature conversions
+1. Track how many times current user has run the program (including persisting count after program terminates)
