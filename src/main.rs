@@ -5,19 +5,19 @@ const CELSIUS: char = 'c';
 const FAHRENHEIT: char = 'f';
 
 
-fn convert_celsius_to_fahrenheit(temperature: u32) -> u32 {
+fn convert_celsius_to_fahrenheit(temperature: i32) -> i32 {
     // F = C * (9/5) + 32
     let fahrenheit_temp = ((temperature * 9) / 5) + 32;
     fahrenheit_temp
 }
 
-fn convert_fahrenheit_to_celsius(temperature: u32) -> u32 {
+fn convert_fahrenheit_to_celsius(temperature: i32) -> i32 {
     // C = (F - 32) * 5/9
-    let celsius_temp = ((temperature - 32) as f64 * (5.0 / 9.0)).round() as u32;
+    let celsius_temp = ((temperature - 32) as f64 * (5.0 / 9.0)).round() as i32;
     celsius_temp
 }
 
-fn output_results(temperature: u32, input_unit: char) {
+fn output_results(temperature: i32, input_unit: char) {
     match input_unit {
         CELSIUS=> println!("Temperature is: {}F", temperature),
         FAHRENHEIT => println!("Temperature is: {}C", temperature),
@@ -47,7 +47,7 @@ fn main() {
             panic!("Invalid temperature unit detected! Please use 'c' or 'f'");
         }
     };
-    let temperature = match user_input.parse::<u32>() {
+    let temperature = match user_input.parse::<i32>() {
         Ok(temp) => temp,
         Err(_) => {
             println!("Invalid temperature input detected! Please use format [number][unit]");
