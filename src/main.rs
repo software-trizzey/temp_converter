@@ -40,7 +40,7 @@ fn main() {
         .expect("Failed to read temperature!");
     user_input = user_input.trim().to_string(); // remove "/n" and ensure value is string
     
-    let input_temperature_unit = match user_input.pop() {
+    let input_temperature_unit = match user_input.pop().map(|character| character.to_ascii_lowercase()) {
         Some(CELSIUS) => CELSIUS,
         Some(FAHRENHEIT) => FAHRENHEIT,
         _ => {
