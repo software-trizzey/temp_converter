@@ -1,5 +1,10 @@
 use std::io;
 
+
+const CELSIUS: char = 'c';
+const FAHRENHEIT: char = 'f';
+
+
 fn convert_celsius_to_fahrenheit(temperature: u32) -> u32 {
     // F = C * (9/5) + 32
     let fahrenheit_temp = ((temperature * 9) / 5) + 32;
@@ -12,10 +17,10 @@ fn convert_fahrenheit_to_celsius(temperature: u32) -> u32 {
     celsius_temp
 }
 
-fn output_results(temperature: u32, input_unit:char) {
+fn output_results(temperature: u32, input_unit: char) {
     match input_unit {
-        'c' => println!("Temperature is: {}F", temperature),
-        'f' => println!("Temperature is: {}C", temperature),
+        CELSIUS=> println!("Temperature is: {}F", temperature),
+        FAHRENHEIT => println!("Temperature is: {}C", temperature),
         _ =>  {
             panic!("Invalid unit! Please use 'c' for Celsius or 'f' for Fahrenheit.");
         }
@@ -36,8 +41,8 @@ fn main() {
     user_input = user_input.trim().to_string(); // remove "/n" and ensure value is string
     
     let input_temperature_unit = match user_input.pop() {
-        Some('c') => 'c',
-        Some('f') => 'f',
+        Some(CELSIUS) => CELSIUS,
+        Some(FAHRENHEIT) => FAHRENHEIT,
         _ => {
             panic!("Invalid temperature unit detected! Please use 'c' or 'f'");
         }
@@ -51,8 +56,8 @@ fn main() {
     };
     
     let converted_temperature = match input_temperature_unit {
-        'c' => convert_celsius_to_fahrenheit(temperature),
-        'f' => convert_fahrenheit_to_celsius(temperature),
+        CELSIUS => convert_celsius_to_fahrenheit(temperature),
+        FAHRENHEIT => convert_fahrenheit_to_celsius(temperature),
         _ => {
             println!("Heads up! '{:#?}' is not a valid unit. Defaulting to celsius.", input_temperature_unit);
             convert_celsius_to_fahrenheit(temperature)
