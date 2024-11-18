@@ -12,17 +12,19 @@ fn convert_fahrenheit_to_celsius(temperature: u32) -> u32 {
     celsius_temp
 }
 
-fn output_results(temperature: u32, input_unit: Option<char>) {
+fn output_results(temperature: u32, input_unit:char) {
     match input_unit {
-        Some('c') => println!("Your temperature is: {}F", temperature),
-        Some('f') => println!("Your temperature is: {}C", temperature),
-        _ => todo!() // probably a better way to handle this
+        'c' => println!("Temperature is: {}F", temperature),
+        'f' => println!("Temperature is: {}C", temperature),
+        _ =>  {
+            panic!("Invalid unit! Please use 'c' for Celsius or 'f' for Fahrenheit.");
+        }
     }
 }
 
 
 fn main() {
-    println!("Simple Temperature Converter (v0.1.0)");
+    println!("Simple Temperature Converter (v0.1.1)");
     
     println!("Please enter temperature followed by unit (ex. 20c or 75f): ");
 
@@ -33,17 +35,28 @@ fn main() {
         .expect("Failed to read temperature!");
     user_input = user_input.trim().to_string(); // remove "/n" and ensure value is string
     
-    let input_temperature_unit = user_input.pop();
-    let temperature = user_input.parse::<u32>().unwrap();
+    let input_temperature_unit = match user_input.pop() {
+        Some('c') => 'c',
+        Some('f') => 'f',
+        _ => {
+            panic!("Invalid temperature unit detected! Please use 'c' or 'f'");
+        }
+    };
+    let temperature = match user_input.parse::<u32>() {
+        Ok(temp) => temp,
+        Err(_) => {
+            println!("Invalid temperature input detected! Please use format [number][unit]");
+            return;
+        }
+    };
     
     let converted_temperature = match input_temperature_unit {
-        Some('c') => convert_celsius_to_fahrenheit(temperature),
-        Some('f') => convert_fahrenheit_to_celsius(temperature),
-        None => {
-            println!("No temperature unit provided! Defaulting to celsius.");
+        'c' => convert_celsius_to_fahrenheit(temperature),
+        'f' => convert_fahrenheit_to_celsius(temperature),
+        _ => {
+            println!("Heads up! '{:#?}' is not a valid unit. Defaulting to celsius.", input_temperature_unit);
             convert_celsius_to_fahrenheit(temperature)
-        }
-        _ => todo!(),
+        },
     };
 
     output_results(converted_temperature, input_temperature_unit);
