@@ -1,4 +1,5 @@
 use std::io;
+use colored::*;
 
 
 const CELSIUS: char = 'c';
@@ -20,17 +21,23 @@ fn convert_fahrenheit_to_celsius(temperature: i32) -> i32 {
 
 fn output_results(temperature: i32, input_unit: char) {
     match input_unit {
-        CELSIUS=> println!("Temperature is: {}F", temperature),
-        FAHRENHEIT => println!("Temperature is: {}C", temperature),
-        _ =>  {
-            panic!("Invalid unit! Please use 'c' for Celsius or 'f' for Fahrenheit.");
+        CELSIUS => println!(
+            "{}",
+            format!("\nTemperature is: {}F", temperature).green().underline()
+        ),
+        FAHRENHEIT => println!(
+            "{}",
+            format!("\nTemperature is: {}C", temperature).green().underline()
+        ),
+        _ => {
+            panic!("{}", "Invalid unit! Please use 'c' for Celsius or 'f' for Fahrenheit.".red());
         }
     }
 }
 
 
 fn main() {
-    println!("Simple Temperature Converter (v0.1.2)");
+    println!("Simple Temperature Converter (v0.1.3)");
     
     loop {
         println!("\nEnter temperature to convert (using format of 20c or 75f):");
@@ -50,7 +57,7 @@ fn main() {
                 break
             }
             _ => {
-                println!("Invalid temperature unit detected! Please use 'c' or 'f'");
+                println!("{}", "Invalid temperature detected! Please use format of '20c' or '75f'".red());
                 continue;
             }
         };
@@ -72,6 +79,6 @@ fn main() {
         };
 
         output_results(converted_temperature, input_temperature_unit);
-        println!("\nYou can enter 'q' to quit program.")
+        println!("{}", "\nNote: enter 'q' to quit program.".yellow())
     }
 }
