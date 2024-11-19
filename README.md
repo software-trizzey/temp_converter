@@ -1,5 +1,7 @@
 # Temperature Converter
 
+<img src="simple_temp_converter_rust.png" alt="Program demo image" width="420px"/>
+
 ## Overview
 Simple rust program that accepts a temperature in celsius or fahrenheit and then converts it to the opposite format.
 
