@@ -3,6 +3,7 @@ use std::io;
 
 const CELSIUS: char = 'c';
 const FAHRENHEIT: char = 'f';
+const QUIT: char = 'q';
 
 
 fn convert_celsius_to_fahrenheit(temperature: i32) -> i32 {
@@ -29,40 +30,48 @@ fn output_results(temperature: i32, input_unit: char) {
 
 
 fn main() {
-    println!("Simple Temperature Converter (v0.1.1)");
+    println!("Simple Temperature Converter (v0.1.2)");
     
-    println!("Please enter temperature followed by unit (ex. 20c or 75f): ");
+    loop {
+        println!("\nEnter temperature to convert (using format of 20c or 75f):");
+        
+        let mut user_input: String = String::new();
 
-    let mut user_input: String = String::new();
+        io::stdin()
+            .read_line(&mut user_input)
+            .expect("Failed to read temperature!");
+        user_input = user_input.trim().to_string(); // remove "/n" and ensure value is string
+        
+        let input_temperature_unit = match user_input.pop().map(|character| character.to_ascii_lowercase()) {
+            Some(CELSIUS) => CELSIUS,
+            Some(FAHRENHEIT) => FAHRENHEIT,
+            Some(QUIT) => {
+                print!("Quitting program... Cya nerd 🤓!");
+                break
+            }
+            _ => {
+                println!("Invalid temperature unit detected! Please use 'c' or 'f'");
+                continue;
+            }
+        };
+        let temperature = match user_input.parse::<i32>() {
+            Ok(temp) => temp,
+            Err(_) => {
+                println!("Invalid temperature input detected! Please use format [number][unit]");
+                continue;
+            }
+        };
+        
+        let converted_temperature = match input_temperature_unit {
+            CELSIUS => convert_celsius_to_fahrenheit(temperature),
+            FAHRENHEIT => convert_fahrenheit_to_celsius(temperature),
+            _ => {
+                println!("Heads up! '{:#?}' is not a valid unit. Defaulting to celsius.", input_temperature_unit);
+                convert_celsius_to_fahrenheit(temperature)
+            },
+        };
 
-    io::stdin()
-        .read_line(&mut user_input)
-        .expect("Failed to read temperature!");
-    user_input = user_input.trim().to_string(); // remove "/n" and ensure value is string
-    
-    let input_temperature_unit = match user_input.pop().map(|character| character.to_ascii_lowercase()) {
-        Some(CELSIUS) => CELSIUS,
-        Some(FAHRENHEIT) => FAHRENHEIT,
-        _ => {
-            panic!("Invalid temperature unit detected! Please use 'c' or 'f'");
-        }
-    };
-    let temperature = match user_input.parse::<i32>() {
-        Ok(temp) => temp,
-        Err(_) => {
-            println!("Invalid temperature input detected! Please use format [number][unit]");
-            return;
-        }
-    };
-    
-    let converted_temperature = match input_temperature_unit {
-        CELSIUS => convert_celsius_to_fahrenheit(temperature),
-        FAHRENHEIT => convert_fahrenheit_to_celsius(temperature),
-        _ => {
-            println!("Heads up! '{:#?}' is not a valid unit. Defaulting to celsius.", input_temperature_unit);
-            convert_celsius_to_fahrenheit(temperature)
-        },
-    };
-
-    output_results(converted_temperature, input_temperature_unit);
+        output_results(converted_temperature, input_temperature_unit);
+        println!("\nYou can enter 'q' to quit program.")
+    }
 }
