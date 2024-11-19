@@ -2,6 +2,7 @@ use std::io;
 use colored::*;
 
 
+const PROGRAM_TITLE: &str = "Simple Temperature Converter (v0.1.3)";
 const CELSIUS: char = 'c';
 const FAHRENHEIT: char = 'f';
 const QUIT: char = 'q';
@@ -29,15 +30,13 @@ fn output_results(temperature: i32, input_unit: char) {
             "{}",
             format!("\nTemperature is: {}C", temperature).green().underline()
         ),
-        _ => {
-            panic!("{}", "Invalid unit! Please use 'c' for Celsius or 'f' for Fahrenheit.".red());
-        }
+        _ => println!("{}", "Unexpected error: invalid unit detected!".red()),
     }
 }
 
 
 fn main() {
-    println!("Simple Temperature Converter (v0.1.3)");
+    println!("{}", PROGRAM_TITLE);
     
     loop {
         println!("\nEnter temperature to convert (using format of 20c or 75f):");
@@ -53,7 +52,7 @@ fn main() {
             Some(CELSIUS) => CELSIUS,
             Some(FAHRENHEIT) => FAHRENHEIT,
             Some(QUIT) => {
-                print!("Quitting program... Cya nerd 🤓!");
+                println!("Quitting {}... Cya nerd 🤓!", PROGRAM_TITLE);
                 break
             }
             _ => {
@@ -72,10 +71,7 @@ fn main() {
         let converted_temperature = match input_temperature_unit {
             CELSIUS => convert_celsius_to_fahrenheit(temperature),
             FAHRENHEIT => convert_fahrenheit_to_celsius(temperature),
-            _ => {
-                println!("Heads up! '{:#?}' is not a valid unit. Defaulting to celsius.", input_temperature_unit);
-                convert_celsius_to_fahrenheit(temperature)
-            },
+            _ => unreachable!("This case should not occur due to earlier validation"),
         };
 
         output_results(converted_temperature, input_temperature_unit);
