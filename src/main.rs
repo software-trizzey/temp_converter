@@ -78,3 +78,32 @@ fn main() {
         println!("{}", "\nNote: enter 'q' to quit program.".yellow())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_correct_fahrenheit_temperature_is_returned_given_celsius_temperature() {
+        let result = convert_celsius_to_fahrenheit(20);
+        assert_eq!(result, 68);
+    }
+
+    #[test]
+    fn test_correct_fahrenheit_temperature_is_returned_given_negative_celsius_temperature() {
+        let result = convert_celsius_to_fahrenheit(-25);
+        assert_eq!(result, -13);
+    }
+
+    #[test]
+    fn test_correct_celsius_temperature_is_returned_given_fahrenheit_temperature() {
+        let result = convert_fahrenheit_to_celsius(68);
+        assert_eq!(result, 20);
+    }
+
+    #[test]
+    fn test_correct_celsius_temperature_is_returned_given_negative_fahrenheit_temperature() {
+        let result = convert_fahrenheit_to_celsius(-17);
+        assert_eq!(result, -27);
+    }
+}
